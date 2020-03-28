@@ -1,7 +1,6 @@
 #include "matrix.h"
 #include <iostream>
 
-const int M = 5;
 void stampaMatrice (int** m, int M, int N) {
 	for (int i = 0; i < M; i++) {
 		for (int j = 0; j < N; j++) {
@@ -95,4 +94,28 @@ void clear () {
 	#else
 	system("CLS");
 	#endif
+}
+
+bool checkProd (int N1, int M2) {
+	if (N1 == M2)
+		return true;
+	else
+		return false;
+}
+
+void prodMat (int** a, int** b, int** ab, int M1, int N1, int M2, int N2) {
+	int M3 = M1;
+	int N3 = N2;
+
+	if (N1 == M2) {
+		for (int i = 0; i < M3; i++) {
+			for (int j = 0; j < N3; j++) {
+				for (int y = 0; y < N1; y++) {
+					ab[i][j] += a[i][y] * b[y][j];
+				}
+			}
+		}
+	}
+
+	return;
 }

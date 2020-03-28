@@ -8,14 +8,16 @@ using namespace std;
 int main () {
 	
 	char flush[0];
-	int M = 1;
-	int N = 1;
+	int M, N = 1;
 	int** mat;
-	int disc = 0;
+	int M2, N2 = 1;
+	int** mat2;
+	int** prod;
+	int det = 0;
 	cout << "*** Benvenuto nel risolutore di matrici ***\n\n";
 	char sel = 'y';
 
-	while(sel != 'n' && sel != 'N') {
+	while(sel == 'y' || sel == 'Y') {
 		//WHAT: Allocazione mat [M][N]
 
 		cout << "Inserisci il numero di righe: ";
@@ -46,21 +48,71 @@ int main () {
 			}
 		}
 
-		//WHAT: Se possibile, calcola il discriminante
+		//WHAT: Se possibile, calcola il determinante
 		if (isValid(M, N)) {
-			disc = calcolaDelta(mat, M);
-			cout << "\nIl discriminante della matrice è " << disc << ".";
+			det = calcolaDelta(mat, M);
+			cout << "\nIl determinante della matrice è " << det << ".";
 		}
 		else 
-			cout << "\nNon è possibile calcolare il discriminante di una matrice non quadrata.";
+			cout << "\nNon è possibile calcolare il determinante di una matrice non quadrata.";
 
-		cout << "\n\nVuoi calcolare il discriminante di un'altra matrice? (Y/n): ";
+
+		cout << "\nInserisci il numero di righe della seconda matrice: ";
+		cin >> M2;
+		cout << "\nInserisci il numero di colonne della seconda matrice: ";
+		cin >> N2;
+
+		mat2 = new int* [M2];
+		for (int i = 0; i < M2; i++) {
+			mat2[i] = new int [N2];
+		}
+		for (int i = M2-1; i >= 0; i--) {
+			for (int j = N2-1; j >= 0; j--) {
+				mat2[i][j] = 0;
+			}
+		}
+		
+		clear();
+		stampaMatrice(mat2, M2, N2);
+		for (int i = 0; i < M2; i++) {
+			for (int j = 0; j < N2; j++) {
+				cout << "\nInserisci " << i+1 << "x" << j+1 << ": ";
+				cin >> mat2[i][j];
+				clear();
+				stampaMatrice(mat2, M2, N2);
+			}
+		}
+
+		if(!checkProd(N, M2)) {
+			cout << "\nNon è possibile svolgere il prodotto di queste due matrici.";
+		}
+		else {
+			prod = new int* [M];
+			for (int i = 0; i < M; i++) {
+				prod[i] = new int [N2];
+			}
+			prodMat(mat, mat2, prod, M, N, M2, N2);
+
+			cout << "\nIl prodotto delle due matrici è: \n";
+			stampaMatrice(prod, M, N2);
+		}
+
+
+		cout << "\n\nVuoi ricominciare? (y/n): ";
 		cin >> sel;
 
 		for (int i = M-1; i >= 0; i--) {
 			delete mat[i];
+			delete prod[i];
 		} 
+		for (int i = M2-1; i >= 0; i--) {
+			delete mat2[i];
+		}
 		delete mat;
+		delete prod;
+		delete mat2;
+		
+
 		clear();
 	}
 
