@@ -5,6 +5,14 @@
 
 using namespace std;
 
+void clear () {
+        #ifdef __unix__
+        system("clear");
+        #else
+        system("CLS");
+        #endif
+}
+
 int main () {
 	
 	char flush[0];
@@ -14,15 +22,15 @@ int main () {
 	int** mat2;
 	int** prod;
 	int det = 0;
-	cout << "*** Benvenuto nel risolutore di matrici ***\n\n";
+	cout << "*** Matrix Solver ***\n\n";
 	char sel = 'y';
 
 	while(sel == 'y' || sel == 'Y') {
 		//WHAT: Allocazione mat [M][N]
 
-		cout << "Inserisci il numero di righe: ";
+		cout << "Insert the rows' number: ";
 		cin >> M;
-		cout << "Inserisci il numero di colonne: ";
+		cout << "Insert the columns' number: ";
 		cin >> N;
 		mat = new int* [M];
 		for (int i = 0; i < M; i++) {
@@ -36,30 +44,29 @@ int main () {
 		}
 		
 		//WHAT: Inserimento valori 
-		//TODO: Implementa la libreria che disse ivan per i cursori
 		clear();
-		stampaMatrice(mat, M, N);
+		printMatrix(mat, M, N);
 		for (int i = 0; i < M; i++) {
 			for (int j = 0; j < N; j++) {
-				cout << "\nInserisci " << i+1 << "x" << j+1 << ": ";
+				cout << "\nInsert " << i+1 << "x" << j+1 << ": ";
 				cin >> mat[i][j];
 				clear();
-				stampaMatrice(mat, M, N);
+				printMatrix(mat, M, N);
 			}
 		}
 
 		//WHAT: Se possibile, calcola il determinante
 		if (isValid(M, N)) {
-			det = calcolaDelta(mat, M);
-			cout << "\nIl determinante della matrice è " << det << ".";
+			det = delta(mat, M);
+			cout << "\nThe determinant is: " << det << ".";
 		}
 		else 
-			cout << "\nNon è possibile calcolare il determinante di una matrice non quadrata.";
+			cout << "\nIt is not possible to calculate the determinant of a non-square matrix.";
 
 
-		cout << "\nInserisci il numero di righe della seconda matrice: ";
+		cout << "\nInsert the second matrix rows' number: ";
 		cin >> M2;
-		cout << "\nInserisci il numero di colonne della seconda matrice: ";
+		cout << "\nInsert the second matrix columns' number: ";
 		cin >> N2;
 
 		mat2 = new int* [M2];
@@ -73,18 +80,18 @@ int main () {
 		}
 		
 		clear();
-		stampaMatrice(mat2, M2, N2);
+		printMatrix(mat2, M2, N2);
 		for (int i = 0; i < M2; i++) {
 			for (int j = 0; j < N2; j++) {
-				cout << "\nInserisci " << i+1 << "x" << j+1 << ": ";
+				cout << "\nInsert " << i+1 << "x" << j+1 << ": ";
 				cin >> mat2[i][j];
 				clear();
-				stampaMatrice(mat2, M2, N2);
+				printMatrix(mat2, M2, N2);
 			}
 		}
 
 		if(!checkProd(N, M2)) {
-			cout << "\nNon è possibile svolgere il prodotto di queste due matrici.";
+			cout << "\nIt's not possible to multiply these two matrixes.";
 		}
 		else {
 			prod = new int* [M];
@@ -93,12 +100,12 @@ int main () {
 			}
 			prodMat(mat, mat2, prod, M, N, M2, N2);
 
-			cout << "\nIl prodotto delle due matrici è: \n";
-			stampaMatrice(prod, M, N2);
+			cout << "\nThe product is: \n";
+			printMatrix(prod, M, N2);
 		}
 
 
-		cout << "\n\nVuoi ricominciare? (y/n): ";
+		cout << "\n\nDo you want to start again? (y/n): ";
 		cin >> sel;
 
 		for (int i = M-1; i >= 0; i--) {
